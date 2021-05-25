@@ -2,12 +2,23 @@ package main
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/eatMoreApple/openwechat"
 )
 
+type ResponseHooker struct{}
+
+func (r ResponseHooker) BeforeRequest(req *http.Request) {}
+
+func (r ResponseHooker) AfterRequest(response *http.Response, err error) {
+	fmt.Println(response.Request.URL.Path)
+	fmt.Println(response.Request.Header)
+}
+
 func main() {
 	bot := openwechat.DefaultBot(openwechat.Desktop)
+	bot.Caller.Client.AddHttpHook(ResponseHooker{})
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
