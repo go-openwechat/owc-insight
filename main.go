@@ -39,6 +39,21 @@ var (
 ////////////////////////////////////////////////////////////////////////////
 // Function definitions
 
+/* 
+
+   NOT WORKING!
+
+type ResponseHooker struct{}
+
+func (r ResponseHooker) BeforeRequest(req *http.Request) {}
+
+func (r ResponseHooker) AfterRequest(response *http.Response, err error) {
+	fmt.Println(response.Request.URL.Path)
+	fmt.Println(response.Request.Header)
+}
+
+*/
+
 //==========================================================================
 // Main
 
@@ -59,6 +74,7 @@ func main() {
 	logIf(0, "Copyright (C) 2020-2021, Tong Sun", "License", "MIT")
 
 	bot := openwechat.DefaultBot(openwechat.Desktop)
+	//bot.Caller.Client.AddHttpHook(ResponseHooker{})
 	// 注册登陆二维码回调
 	bot.UUIDCallback = ConsoleQrCode
 
