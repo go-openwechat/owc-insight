@@ -1,55 +1,110 @@
+////////////////////////////////////////////////////////////////////////////
+// Program: wxsg
+// Purpose: WX Statistic Genie
+// Authors: Tong Sun (c) 2020-2021, All rights reserved
+////////////////////////////////////////////////////////////////////////////
+
 package main
 
 import (
 	"fmt"
-	"net/http"
+	"strconv"
 
+	"github.com/caarlos0/env"
+	"github.com/skip2/go-qrcode"
 	"github.com/eatMoreApple/openwechat"
 )
 
-type ResponseHooker struct{}
+////////////////////////////////////////////////////////////////////////////
+// Constant and data type/structure definitions
 
-func (r ResponseHooker) BeforeRequest(req *http.Request) {}
+const desc = "WX Statistic Genie"
 
-func (r ResponseHooker) AfterRequest(response *http.Response, err error) {
-	fmt.Println(response.Request.URL.Path)
-	fmt.Println(response.Request.Header)
+type envConfig struct {
+	LogLevel      string `env:"WXSG_LOG"`
 }
 
+////////////////////////////////////////////////////////////////////////////
+// Global variables definitions
+
+var (
+	progname = "wxsg"
+	version  = "0.1.0"
+	date     = "2021-07-15"
+
+	e   envConfig
+
+)
+
+////////////////////////////////////////////////////////////////////////////
+// Function definitions
+
+//==========================================================================
+// Main
+
 func main() {
+	// == Config handling
+	err := env.Parse(&e)
+	abortOn("Env config parsing error", err)
+	if e.LogLevel != "" {
+		di, err := strconv.ParseInt(e.LogLevel, 10, 8)
+		abortOn("WXSG_LOG (int) parse error", err)
+		debug = int(di)
+	}
+
+	logIf(0, desc,
+		"Version", version,
+		"Built-on", date,
+	)
+	logIf(0, "Copyright (C) 2020-2021, Tong Sun", "License", "MIT")
+
 	bot := openwechat.DefaultBot(openwechat.Desktop)
-	bot.Caller.Client.AddHttpHook(ResponseHooker{})
+	// 注册登陆二维码回调
+	bot.UUIDCallback = ConsoleQrCode
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
 		if msg.IsText() {
-			fmt.Println("你收到了一条新的文本消息")
+			if msg.Content == "ping" {
+				msg.ReplyText("pong")
+				fmt.Println("回文本消息", msg.Content)
+			} else  {
+				fmt.Println("收到文本消息", msg.Content)
+			}
 		}
 	}
-	// 注册登陆二维码回调
-	bot.UUIDCallback = openwechat.PrintlnQrcodeUrl
 
-	// 登陆
-	if err := bot.Login(); err != nil {
-		fmt.Println(err)
-		return
-	}
+	// 创建热存储容器对象
+	reloadStorage := openwechat.NewJsonFileHotReloadStorage("storage.json")
+
+	// 执行热登陆
+	err = bot.HotLogin(reloadStorage)
+	abortOn("Can't start bot", err)
 
 	// 获取登陆的用户
 	self, err := bot.GetCurrentUser()
-	if err != nil {
-		fmt.Println(err)
-		return
-	}
-
-	// 获取所有的好友
-	friends, err := self.Friends()
-	fmt.Println(friends, err)
+	abortOn("Can't get self", err)
+	logIf(0, "logged-on", "user", self)
 
 	// 获取所有的群组
 	groups, err := self.Groups()
-	fmt.Println(groups, err)
+	abortOn("Can't get groups", err)
+	logIf(1, "groups", "list", fmt.Sprintf("%v", groups))
+
+	// 获取所有的好友(最新的好友)
+	friends, err := self.Friends(true)
+	abortOn("Can't get friends", err)
+	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
 
 	// 阻塞主goroutine, 知道发生异常或者用户主动退出
 	bot.Block()
+}
+
+
+//==========================================================================
+// support functions
+
+func ConsoleQrCode(uuid string) {
+	q, _ := qrcode.New("https://login.weixin.qq.com/l/"+uuid, qrcode.Low)
+	fmt.Println(q.ToString(true))
 }
