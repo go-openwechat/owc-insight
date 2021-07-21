@@ -78,8 +78,20 @@ func main() {
 	// 注册登陆二维码回调
 	bot.UUIDCallback = ConsoleQrCode
 
+	var count int32
+	bot.GetMessageErrorHandler = func(err error) {
+		// do your own idea here
+		count++
+		// 如果发生了三次错误,那么直接退出
+		if count == 3 {
+			bot.Logout()
+		}
+	}
+
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
+		logIf(0, "收到消息", "content", fmt.Sprintf("%v", msg.Content))
+
 		if msg.IsText() {
 			if msg.Content == "ping" {
 				msg.ReplyText("pong")
@@ -122,5 +134,5 @@ func main() {
 
 func ConsoleQrCode(uuid string) {
 	q, _ := qrcode.New("https://login.weixin.qq.com/l/"+uuid, qrcode.Low)
-	fmt.Println(q.ToString(true))
+	fmt.Println(q.ToSmallString(true))
 }
