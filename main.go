@@ -1,6 +1,6 @@
 ////////////////////////////////////////////////////////////////////////////
-// Program: wxsg
-// Purpose: WX Statistic Genie
+// Program: owc-insight
+// Purpose: OpenWeChat Insight
 // Authors: Tong Sun (c) 2020-2021, All rights reserved
 ////////////////////////////////////////////////////////////////////////////
 
@@ -18,19 +18,19 @@ import (
 ////////////////////////////////////////////////////////////////////////////
 // Constant and data type/structure definitions
 
-const desc = "WX Statistic Genie"
+const desc = "OpenWeChat Insight"
 
 type envConfig struct {
-	LogLevel      string `env:"WXSG_LOG"`
+	LogLevel      string `env:"OWCI_LOG"`
 }
 
 ////////////////////////////////////////////////////////////////////////////
 // Global variables definitions
 
 var (
-	progname = "wxsg"
+	progname = "owc-insight"
 	version  = "0.1.0"
-	date     = "2021-07-15"
+	date     = "2021-07-20"
 
 	e   envConfig
 
@@ -63,7 +63,7 @@ func main() {
 	abortOn("Env config parsing error", err)
 	if e.LogLevel != "" {
 		di, err := strconv.ParseInt(e.LogLevel, 10, 8)
-		abortOn("WXSG_LOG (int) parse error", err)
+		abortOn("OWCI_LOG (int) parse error", err)
 		debug = int(di)
 	}
 
