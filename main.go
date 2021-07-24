@@ -11,8 +11,8 @@ import (
 	"strconv"
 
 	"github.com/caarlos0/env"
-	"github.com/skip2/go-qrcode"
 	"github.com/eatMoreApple/openwechat"
+	"github.com/skip2/go-qrcode"
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -21,7 +21,7 @@ import (
 const desc = "OpenWeChat Insight"
 
 type envConfig struct {
-	LogLevel      string `env:"OWCI_LOG"`
+	LogLevel string `env:"OWCI_LOG"`
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -32,14 +32,13 @@ var (
 	version  = "0.1.0"
 	date     = "2021-07-20"
 
-	e   envConfig
-
+	e envConfig
 )
 
 ////////////////////////////////////////////////////////////////////////////
 // Function definitions
 
-/* 
+/*
 
    NOT WORKING!
 
@@ -90,13 +89,15 @@ func main() {
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
-		logIf(0, "收到消息", "content", fmt.Sprintf("%v", msg.Content))
+		logIf(0, "收到消息", "type",
+			fmt.Sprintf("%d (%d,%d)", msg.MsgType, msg.AppMsgType, msg.SubMsgType),
+			"content", fmt.Sprintf("%v", msg.Content))
 
 		if msg.IsText() {
 			if msg.Content == "ping" {
 				msg.ReplyText("pong")
 				fmt.Println("回文本消息", msg.Content)
-			} else  {
+			} else {
 				fmt.Println("收到文本消息", msg.Content)
 			}
 		}
@@ -127,7 +128,6 @@ func main() {
 	// 阻塞主goroutine, 知道发生异常或者用户主动退出
 	bot.Block()
 }
-
 
 //==========================================================================
 // support functions
