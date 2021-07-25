@@ -122,7 +122,7 @@ func main() {
 
 	// 执行热登陆
 	err = bot.HotLogin(reloadStorage)
-	abortOn("Can't start bot", err)
+	_abortOn("Can't start bot", err, 9)
 
 	// 获取登陆的用户
 	self, err := bot.GetCurrentUser()
@@ -150,7 +150,7 @@ func main() {
 			}
 
 			err := bot.HotLogin(reloadStorage)
-			abortOn("Can't restart bot", err)
+			_abortOn("Can't restart bot", err, 9)
 			logIf(1, "scheduled-relogin", "user", self)
 		}
 	}(reloadStorage, self)

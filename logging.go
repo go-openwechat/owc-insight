@@ -50,8 +50,12 @@ func logIf(level int, message string, args ...interface{}) {
 
 // abortOn will quit on anticipated errors gracefully without stack trace
 func abortOn(errCase string, e error) {
+	_abortOn(errCase, e, 1)
+}
+
+func _abortOn(errCase string, e error, ret int) {
 	if e != nil {
 		logger.Log("Abort", errCase, "Err", e)
-		os.Exit(1)
+		os.Exit(ret)
 	}
 }

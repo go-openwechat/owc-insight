@@ -11,3 +11,10 @@ openwechat insight
 - Using every possible attempt to stay alive & connected, while making the approach discreet (undetectable from the server end). E.g., stay-alive in debug mode:  
   ![image](https://user-images.githubusercontent.com/422244/126901864-b25ab53d-b9dd-4241-87c6-37e08c6efdb1.png)
 
+## Execution
+
+Fault-tolerance execution loop, until no longer able to do hot relogin:
+
+```sh
+while :; do OWCI_LOG=2 owc-insight ; [ $? -eq 9 ] && break; sleep 5m; done; rm storage.json; echo "Down at `date`", send Down Alert
+```
