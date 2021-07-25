@@ -8,7 +8,9 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/caarlos0/env"
 	//"github.com/eatMoreApple/openwechat"
@@ -117,10 +119,27 @@ func main() {
 	abortOn("Can't get self", err)
 	logIf(0, "logged-on", "user", self)
 
+	// == Start Scheduled Executor
+	rand.Seed(time.Now().Unix())
+	go func(reloadStorage openwechat.HotReloadStorage,
+		self *openwechat.Self) {
+		for true {
+			// delay 20m ~ 30m
+			d := 1200 + rand.Intn(600)
+			// uncomment for debug
+			// d /= 10
+			time.Sleep(time.Duration(d) * time.Second)
+
+			err := bot.HotLogin(reloadStorage)
+			abortOn("Can't start bot", err)
+			logIf(1, "scheduled-relogin", "user", self)
+		}
+	}(reloadStorage, self)
+
 	// 获取所有的群组
 	groups, err := self.Groups()
 	abortOn("Can't get groups", err)
-	logIf(1, "groups", "list", fmt.Sprintf("%v", groups))
+	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
 
 	// 获取所有的好友(最新的好友)
 	friends, err := self.Friends(true)
