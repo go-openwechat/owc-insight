@@ -92,7 +92,8 @@ func main() {
 	bot.MessageHandler = func(msg *openwechat.Message) {
 		logIf(0, "收到消息", "type",
 			fmt.Sprintf("%d (%d,%d)", msg.MsgType, msg.AppMsgType, msg.SubMsgType),
-			"content", fmt.Sprintf("%v", msg.Content))
+			"content", "")
+		fmt.Println(msg.Content)
 
 		if msg.IsText() {
 			if msg.Content == "ping" {
