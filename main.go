@@ -36,6 +36,9 @@ var (
 	date     = "2021-07-20"
 
 	e envConfig
+
+	lastReceived time.Time
+	lastError    time.Time
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -92,6 +95,7 @@ func main() {
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
+		lastReceived = time.Now()
 		logIf(0, "收到消息", "type",
 			fmt.Sprintf("%d (%d,%d)", msg.MsgType, msg.AppMsgType, msg.SubMsgType),
 			"content", "")
@@ -121,6 +125,7 @@ func main() {
 
 	// == Start Scheduled Executor
 	rand.Seed(time.Now().Unix())
+	lastReceived = time.Now()
 	go func(reloadStorage openwechat.HotReloadStorage,
 		self *openwechat.Self) {
 		for true {
@@ -129,6 +134,13 @@ func main() {
 			// uncomment for debug
 			// d /= 10
 			time.Sleep(time.Duration(d) * time.Second)
+			t := time.Now()
+			diff := t.Sub(lastReceived)
+			if diff < 5*time.Minute {
+				// too hot, wait for quieter time
+				logIf(1, "scheduled-relogin-skipped", "gap", diff)
+				continue
+			}
 
 			err := bot.HotLogin(reloadStorage)
 			abortOn("Can't start bot", err)
