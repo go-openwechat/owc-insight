@@ -8,11 +8,14 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"strconv"
+	"time"
 
 	"github.com/caarlos0/env"
-	"github.com/eatMoreApple/openwechat"
+	//"github.com/eatMoreApple/openwechat"
 	"github.com/skip2/go-qrcode"
+	"github.com/suntong/openwechat"
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -33,6 +36,9 @@ var (
 	date     = "2021-07-20"
 
 	e envConfig
+
+	lastReceived time.Time
+	lastError    time.Time
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -79,19 +85,27 @@ func main() {
 
 	var count int32
 	bot.GetMessageErrorHandler = func(err error) {
-		// do your own idea here
-		count++
+		t := time.Now()
+		if t.Sub(lastError) < 30*time.Minute {
+			count++
+		} else {
+			count = 1
+		}
 		// 如果发生了三次错误,那么直接退出
 		if count == 3 {
 			bot.Logout()
 		}
+		logIf(0, "catch-and-skip", "count", count, "err", err)
+		lastError = time.Now()
 	}
 
 	// 注册消息处理函数
 	bot.MessageHandler = func(msg *openwechat.Message) {
+		lastReceived = time.Now()
 		logIf(0, "收到消息", "type",
 			fmt.Sprintf("%d (%d,%d)", msg.MsgType, msg.AppMsgType, msg.SubMsgType),
-			"content", fmt.Sprintf("%v", msg.Content))
+			"content", "")
+		fmt.Println(msg.Content)
 
 		if msg.IsText() {
 			if msg.Content == "ping" {
@@ -115,10 +129,36 @@ func main() {
 	abortOn("Can't get self", err)
 	logIf(0, "logged-on", "user", self)
 
+	// == Start Scheduled Executor
+	rand.Seed(time.Now().Unix())
+	lastReceived = time.Now()
+	lastError = time.Now()
+	go func(reloadStorage openwechat.HotReloadStorage,
+		self *openwechat.Self) {
+		for true {
+			// delay 20m ~ 30m
+			d := 1200 + rand.Intn(600)
+			// uncomment for debug
+			// d /= 10
+			time.Sleep(time.Duration(d) * time.Second)
+			t := time.Now()
+			diff := t.Sub(lastReceived)
+			if diff < 5*time.Minute {
+				// too hot, wait for quieter time
+				logIf(1, "scheduled-relogin-skipped", "gap", diff)
+				continue
+			}
+
+			err := bot.HotLogin(reloadStorage)
+			abortOn("Can't restart bot", err)
+			logIf(1, "scheduled-relogin", "user", self)
+		}
+	}(reloadStorage, self)
+
 	// 获取所有的群组
 	groups, err := self.Groups()
 	abortOn("Can't get groups", err)
-	logIf(1, "groups", "list", fmt.Sprintf("%v", groups))
+	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
 
 	// 获取所有的好友(最新的好友)
 	friends, err := self.Friends(true)
