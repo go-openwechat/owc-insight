@@ -1,0 +1,142 @@
+<?xml version="1.0"?>
+<msg>
+	<appmsg appid="" sdkver="0">
+		<title>刚刚，亚马逊血流成河！大量中国卖家血本无归...</title>
+		<des>10亿级卖家被封</des>
+		<username />
+		<action>view</action>
+		<type>5</type>
+		<showtype>0</showtype>
+		<content />
+		<url>http://mp.weixin.qq.com/s?__biz=MzAxMDY5MTc5Mw==&amp;mid=2651368288&amp;idx=2&amp;sn=3ab652adf668f1beca19350c861b2918&amp;chksm=80b07edeb7c7f7c879d00e363143e426cf648e7367153b8443888dab37b8f570d8136519e44c&amp;mpshare=1&amp;scene=1&amp;srcid=0726sZlcZIm2HuT9d3USGH98&amp;sharer_sharetime=1627268842252&amp;sharer_shareid=22f840702411b0aba605642f755cd8b0#rd</url>
+		<lowurl />
+		<forwardflag>0</forwardflag>
+		<dataurl />
+		<lowdataurl />
+		<contentattr>0</contentattr>
+		<streamvideo>
+			<streamvideourl />
+			<streamvideototaltime>0</streamvideototaltime>
+			<streamvideotitle />
+			<streamvideowording />
+			<streamvideoweburl />
+			<streamvideothumburl />
+			<streamvideoaduxinfo />
+			<streamvideopublishid />
+		</streamvideo>
+		<canvasPageItem>
+			<canvasPageXml><![CDATA[]]></canvasPageXml>
+		</canvasPageItem>
+		<appattach>
+			<attachid />
+			<cdnthumburl>308182020100047b307902010002047ce9e15802033d09680204728b2065020460fdf74104546175706170706d73675f346634633333316432333562303862615f313632373235363634333337375f3339353730385f61326134666630382d323261312d343962362d386437662d3538663065316238623139310204011c00030201000400</cdnthumburl>
+			<cdnthumbmd5>dc68c7e75bb96940a4243f15eeaab2df</cdnthumbmd5>
+			<cdnthumblength>16111</cdnthumblength>
+			<cdnthumbheight>120</cdnthumbheight>
+			<cdnthumbwidth>120</cdnthumbwidth>
+			<cdnthumbaeskey>629babe7a0eaa2598340c986e8e07ed7</cdnthumbaeskey>
+			<aeskey>629babe7a0eaa2598340c986e8e07ed7</aeskey>
+			<encryver>1</encryver>
+			<fileext />
+			<islargefilemsg>0</islargefilemsg>
+		</appattach>
+		<extinfo />
+		<androidsource>2</androidsource>
+		<sourceusername></sourceusername>
+		<sourcedisplayname>金融五道口</sourcedisplayname>
+		<commenturl />
+		<thumburl />
+		<mediatagname />
+		<messageaction><![CDATA[]]></messageaction>
+		<messageext><![CDATA[]]></messageext>
+		<emoticongift>
+			<packageflag>0</packageflag>
+			<packageid />
+		</emoticongift>
+		<emoticonshared>
+			<packageflag>0</packageflag>
+			<packageid />
+		</emoticonshared>
+		<designershared>
+			<designeruin>0</designeruin>
+			<designername>null</designername>
+			<designerrediretcturl>null</designerrediretcturl>
+		</designershared>
+		<emotionpageshared>
+			<tid>0</tid>
+			<title>null</title>
+			<desc>null</desc>
+			<iconUrl>null</iconUrl>
+			<secondUrl>null</secondUrl>
+			<pageType>0</pageType>
+		</emotionpageshared>
+		<webviewshared>
+			<shareUrlOriginal>http://mp.weixin.qq.com/s?__biz=MzAxMDY5MTc5Mw==&amp;mid=2651368288&amp;idx=2&amp;sn=3ab652adf668f1beca19350c861b2918&amp;chksm=80b07edeb7c7f7c879d00e363143e426cf648e7367153b8443888dab37b8f570d8136519e44c&amp;&amp;xtrack=1&amp;scene=90&amp;subscene=93&amp;sessionid=1627268778&amp;clicktime=1627268785&amp;enterid=1627268785#rd</shareUrlOriginal>
+			<shareUrlOpen>https://mp.weixin.qq.com/s?__biz=MzAxMDY5MTc5Mw==&amp;mid=2651368288&amp;idx=2&amp;sn=3ab652adf668f1beca19350c861b2918&amp;chksm=80b07edeb7c7f7c879d00e363143e426cf648e7367153b8443888dab37b8f570d8136519e44c&amp;&amp;xtrack=1&amp;scene=90&amp;subscene=93&amp;sessionid=1627268778&amp;clicktime=1627268785&amp;enterid=1627268785#rd</shareUrlOpen>
+			<jsAppId />
+			<publisherId>msg_8223892396151742904</publisherId>
+		</webviewshared>
+		<template_id />
+		<md5>dc68c7e75bb96940a4243f15eeaab2df</md5>
+		<weappinfo>
+			<username />
+			<appid />
+			<appservicetype>0</appservicetype>
+			<secflagforsinglepagemode>0</secflagforsinglepagemode>
+			<videopageinfo>
+				<thumbwidth>120</thumbwidth>
+				<thumbheight>120</thumbheight>
+				<fromopensdk>0</fromopensdk>
+			</videopageinfo>
+		</weappinfo>
+		<statextstr />
+		<mmreadershare>
+			<itemshowtype>0</itemshowtype>
+			<ispaysubscribe>0</ispaysubscribe>
+		</mmreadershare>
+		<musicShareItem>
+			<musicDuration>0</musicDuration>
+		</musicShareItem>
+		<findernamecard>
+			<username />
+			<avatar><![CDATA[]]></avatar>
+			<nickname />
+			<auth_job />
+			<auth_icon>0</auth_icon>
+			<auth_icon_url />
+		</findernamecard>
+		<finderGuarantee>
+			<scene><![CDATA[0]]></scene>
+		</finderGuarantee>
+		<directshare>0</directshare>
+		<gamecenter>
+			<namecard>
+				<iconUrl />
+				<name />
+				<desc />
+				<tail />
+				<jumpUrl />
+			</namecard>
+		</gamecenter>
+		<patMsg>
+			<chatUser />
+			<records>
+				<recordNum>0</recordNum>
+			</records>
+		</patMsg>
+		<secretmsg>
+			<issecretmsg>0</issecretmsg>
+		</secretmsg>
+		<websearch>
+			<rec_category>0</rec_category>
+			<channelId>0</channelId>
+		</websearch>
+	</appmsg>
+	<fromusername></fromusername>
+	<scene>0</scene>
+	<appinfo>
+		<version>1</version>
+		<appname />
+	</appinfo>
+	<commenturl />
+</msg>

@@ -1,0 +1,144 @@
+<?xml version="1.0"?>
+<msg>
+	<appmsg appid="" sdkver="0">
+		<title>6种衰老害怕的水果，建议常吃，不仅抗衰老，有的提高免疫力抗癌</title>
+		<des />
+		<username />
+		<action>view</action>
+		<type>33</type>
+		<showtype>0</showtype>
+		<content />
+		<url>https://mp.weixin.qq.com/mp/waerrpage?appid=wxbb9a805eb4f9533c&amp;type=upgrade&amp;upgradetype=3#wechat_redirect</url>
+		<lowurl />
+		<forwardflag>0</forwardflag>
+		<dataurl />
+		<lowdataurl />
+		<contentattr>0</contentattr>
+		<streamvideo>
+			<streamvideourl />
+			<streamvideototaltime>0</streamvideototaltime>
+			<streamvideotitle />
+			<streamvideowording />
+			<streamvideoweburl />
+			<streamvideothumburl />
+			<streamvideoaduxinfo />
+			<streamvideopublishid />
+		</streamvideo>
+		<canvasPageItem>
+			<canvasPageXml><![CDATA[]]></canvasPageXml>
+		</canvasPageItem>
+		<appattach>
+			<attachid />
+			<cdnthumburl>308182020100047b30790201000204a9d1af1402033d09680204fe8b2065020460fe26a204546175706170706d73675f623761333130636266336265663536365f313632373236383736393432305f3230393837305f65333136363431372d373434652d346636662d386434322d6635316134393632643333610204011c00030201000400</cdnthumburl>
+			<cdnthumbmd5>ed4ab6f41d54426c7fef490b566dcba9</cdnthumbmd5>
+			<cdnthumblength>27862</cdnthumblength>
+			<cdnthumbheight>576</cdnthumbheight>
+			<cdnthumbwidth>720</cdnthumbwidth>
+			<cdnthumbaeskey>dbcb15125a47b408062f302388acd6ec</cdnthumbaeskey>
+			<aeskey>dbcb15125a47b408062f302388acd6ec</aeskey>
+			<encryver>1</encryver>
+			<fileext />
+			<islargefilemsg>0</islargefilemsg>
+		</appattach>
+		<extinfo />
+		<androidsource>0</androidsource>
+		<sourceusername></sourceusername>
+		<sourcedisplayname>看一看+</sourcedisplayname>
+		<commenturl />
+		<thumburl />
+		<mediatagname />
+		<messageaction><![CDATA[]]></messageaction>
+		<messageext><![CDATA[]]></messageext>
+		<emoticongift>
+			<packageflag>0</packageflag>
+			<packageid />
+		</emoticongift>
+		<emoticonshared>
+			<packageflag>0</packageflag>
+			<packageid />
+		</emoticonshared>
+		<designershared>
+			<designeruin>0</designeruin>
+			<designername>null</designername>
+			<designerrediretcturl>null</designerrediretcturl>
+		</designershared>
+		<emotionpageshared>
+			<tid>0</tid>
+			<title>null</title>
+			<desc>null</desc>
+			<iconUrl>null</iconUrl>
+			<secondUrl>null</secondUrl>
+			<pageType>0</pageType>
+		</emotionpageshared>
+		<webviewshared>
+			<shareUrlOriginal />
+			<shareUrlOpen />
+			<jsAppId />
+			<publisherId>wxapp_wxbb9a805eb4f9533cpages/index/index.html?from=share&amp;vid=ugc_9vqbxu&amp;tabType=jx_target&amp;sharesearchid=5091013717692090053&amp;shareSource=-1&amp;shareOpenid=oh_m45YPOWrrKN_7o8h9GxCU2JAs&amp;appid=&amp;mediaid=</publisherId>
+		</webviewshared>
+		<template_id />
+		<md5>ed4ab6f41d54426c7fef490b566dcba9</md5>
+		<weappinfo>
+			<pagepath><![CDATA[pages/index/index.html?from=share&vid=ugc_9vqbxu&tabType=jx_target&sharesearchid=5091013717692090053&shareSource=-1&shareOpenid=oh_m45YPOWrrKN_7o8h9GxCU2JAs&appid=&mediaid=]]></pagepath>
+			<username></username>
+			<appid>wxbb9a805eb4f9533c</appid>
+			<version>213</version>
+			<type>2</type>
+			<weappiconurl><![CDATA[http://wx.qlogo.cn/mmhead/Q3auHgzwzM4q6vp7hTedvlwQJUnt6JPCEz3da2bZntFrH34qFNBuQA/96]]></weappiconurl>
+			<weapppagethumbrawurl><![CDATA[http://mmbiz.qpic.cn/wx_search/Q3auHgzwzM6hiaHcSicmACTMfgzFdsLu77mnNtfiaUiczGtTo06narpbpoc2XRG5Fo6cyViahxNcBiblY/0]]></weapppagethumbrawurl>
+			<shareId><![CDATA[1_wxbb9a805eb4f9533c_22f840702411b0aba605642f755cd8b0_1627268767_0]]></shareId>
+			<appservicetype>0</appservicetype>
+			<secflagforsinglepagemode>0</secflagforsinglepagemode>
+			<videopageinfo>
+				<thumbwidth>720</thumbwidth>
+				<thumbheight>576</thumbheight>
+				<fromopensdk>0</fromopensdk>
+			</videopageinfo>
+		</weappinfo>
+		<statextstr />
+		<musicShareItem>
+			<musicDuration>0</musicDuration>
+		</musicShareItem>
+		<findernamecard>
+			<username />
+			<avatar><![CDATA[]]></avatar>
+			<nickname />
+			<auth_job />
+			<auth_icon>0</auth_icon>
+			<auth_icon_url />
+		</findernamecard>
+		<finderGuarantee>
+			<scene><![CDATA[0]]></scene>
+		</finderGuarantee>
+		<directshare>0</directshare>
+		<gamecenter>
+			<namecard>
+				<iconUrl />
+				<name />
+				<desc />
+				<tail />
+				<jumpUrl />
+			</namecard>
+		</gamecenter>
+		<patMsg>
+			<chatUser />
+			<records>
+				<recordNum>0</recordNum>
+			</records>
+		</patMsg>
+		<secretmsg>
+			<issecretmsg>0</issecretmsg>
+		</secretmsg>
+		<websearch>
+			<rec_category>0</rec_category>
+			<channelId>0</channelId>
+		</websearch>
+	</appmsg>
+	<fromusername></fromusername>
+	<scene>0</scene>
+	<appinfo>
+		<version>1</version>
+		<appname />
+	</appinfo>
+	<commenturl />
+</msg>
