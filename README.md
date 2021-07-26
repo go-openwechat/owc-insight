@@ -18,3 +18,6 @@ Fault-tolerance execution loop, until no longer able to do hot relogin:
 ```sh
 while :; do OWCI_LOG=2 owc-insight ; [ $? -eq 9 ] && break; sleep 5m; done; rm storage.json; echo "Down at `date`", send Down Alert
 ```
+![image](https://user-images.githubusercontent.com/422244/126921429-d57c7853-bddd-46ca-8803-5dc240271467.png)
+
+This has been running for the whole day and is still going strong. 
