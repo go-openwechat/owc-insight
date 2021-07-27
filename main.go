@@ -104,8 +104,13 @@ func main() {
 		lastReceived = time.Now()
 		logIf(0, "收到消息", "type",
 			fmt.Sprintf("%d (%d,%d)", msg.MsgType, msg.AppMsgType, msg.SubMsgType),
+			// "from", msg.FromUserName, "to", msg.ToUserName,
 			"content", "")
-		fmt.Println(msg.Content)
+		if len(msg.Content) == 0 {
+			fmt.Println(msg)
+		} else {
+			fmt.Println(msg.Content)
+		}
 
 		if msg.IsText() {
 			if msg.Content == "ping" {
