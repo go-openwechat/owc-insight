@@ -152,18 +152,11 @@ func main() {
 			err := bot.HotLogin(reloadStorage)
 			_abortOn("Can't restart bot", err, 9)
 			logIf(1, "scheduled-relogin", "user", self)
+			postLogin(self)
 		}
 	}(reloadStorage, self)
 
-	// 获取所有的群组
-	groups, err := self.Groups()
-	abortOn("Can't get groups", err)
-	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
-
-	// 获取所有的好友(最新的好友)
-	friends, err := self.Friends(true)
-	abortOn("Can't get friends", err)
-	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
+	postLogin(self)
 
 	// 阻塞主goroutine, 知道发生异常或者用户主动退出
 	bot.Block()
@@ -175,4 +168,29 @@ func main() {
 func ConsoleQrCode(uuid string) {
 	q, _ := qrcode.New("https://login.weixin.qq.com/l/"+uuid, qrcode.Low)
 	fmt.Println(q.ToSmallString(true))
+}
+
+func postLogin(self *openwechat.Self) {
+	// 获取所有的群组
+	groups, err := self.Groups()
+	abortOn("Can't get groups", err)
+	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
+
+	// 获取所有的好友(最新的好友)
+	friends, err := self.Friends(true)
+	abortOn("Can't get friends", err)
+	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
+
+	// WX ClientCheck from 微信团队 will come within seconds after initially login
+	// wait for ~2 minutes to confirm their arrival
+	go func() {
+		time.Sleep(100 * time.Second)
+		t := time.Now()
+		diff := t.Sub(lastReceived)
+		if diff > 2*time.Minute {
+			abortOn("Lost WX ClientCheck handshake", nil)
+			// try fresh HotLogin via external loop
+		}
+		logIf(1, "wx-clientcheck-passed", "gap", diff)
+	}()
 }
