@@ -24,7 +24,9 @@ import (
 const desc = "OpenWeChat Insight"
 
 type envConfig struct {
-	LogLevel string `env:"OWCI_LOG"`
+	LogLevel  string `env:"OWCI_LOG"`
+	KaWait    int    `env:"OWCI_KA_WAIT" envDefault:"450"`   // keep-alive wait (in min)
+	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"60"` // ka variant (in min)
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -77,6 +79,11 @@ func main() {
 		"Built-on", date,
 	)
 	logIf(0, "Copyright (C) 2020-2021, Tong Sun", "License", "MIT")
+	logIf(0, "Program parameters",
+		"log-level", e.LogLevel,
+		"keep-alive-wait-min", e.KaWait,
+		"keep-alive-variant-min", e.KaVariety,
+	)
 
 	bot := openwechat.DefaultBot(openwechat.Desktop)
 	//bot.Caller.Client.AddHttpHook(ResponseHooker{})
@@ -141,11 +148,9 @@ func main() {
 	go func(reloadStorage openwechat.HotReloadStorage,
 		self *openwechat.Self) {
 		for true {
-			// delay 20m ~ 30m
-			d := 1200 + rand.Intn(600)
-			// uncomment for debug
-			// d /= 10
-			time.Sleep(time.Duration(d) * time.Second)
+			// delay e.KaWait + e.KaVariety
+			d := e.KaWait + rand.Intn(e.KaVariety)
+			time.Sleep(time.Duration(d) * time.Minute)
 			t := time.Now()
 			diff := t.Sub(lastReceived)
 			if diff < 5*time.Minute {
