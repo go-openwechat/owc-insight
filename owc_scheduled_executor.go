@@ -9,7 +9,7 @@ import (
 
 // Scheduled Executor
 func periodicHotReload(bot *openwechat.Bot,
-	reloadStorage openwechat.HotReloadStorage, self *openwechat.Self) {
+	self *openwechat.Self, reloadStorage openwechat.HotReloadStorage) {
 
 	for true {
 		// delay e.KaWait + e.KaVariety

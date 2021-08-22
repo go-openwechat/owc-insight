@@ -15,9 +15,10 @@ func textMessageHandle(msg *openwechat.Message) {
 	// 如果是群聊消息，该方法返回的是群聊对象(需要自己将User转换为Group对象)
 	fromGroup := ""
 	if msg.IsSendByGroup() {
+		// 取出消息在群里面的发送者
 		fromGroup = fmt.Sprintf("%s", sender)
-		sender, err = msg.SenderInGroup()
-		abortOn("Can't get sender in group", err)
+		sender, _ = msg.SenderInGroup()
+		// might not be able to get sender in group, ignore error
 	}
 	fromUserName := fmt.Sprintf("%s", sender)
 

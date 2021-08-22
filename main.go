@@ -7,6 +7,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"math/rand"
 	"strconv"
@@ -41,6 +42,9 @@ var (
 
 	lastReceived time.Time
 	lastError    time.Time
+
+	ErrLoginFailed     = errors.New("login failed")
+	ErrClientCheckLost = errors.New("ClientCheck lost")
 )
 
 ////////////////////////////////////////////////////////////////////////////
@@ -96,11 +100,9 @@ func main() {
 
 	// 创建热存储容器对象
 	reloadStorage := openwechat.NewJsonFileHotReloadStorage("storage.json")
-
 	// 执行热登陆, 不定长参数设置为true, 可在登录凭证失效后进行扫码登录
 	err = bot.HotLogin(reloadStorage, true)
 	_abortOn("Can't start bot", err, 9)
-
 	// 获取登陆的用户
 	self, err := bot.GetCurrentUser()
 	abortOn("Can't get self", err)
@@ -110,11 +112,11 @@ func main() {
 	rand.Seed(time.Now().Unix())
 	lastReceived = time.Now()
 	lastError = time.Now()
-	go periodicHotReload(bot, reloadStorage, self)
+	go periodicHotReload(bot, self, reloadStorage)
 
 	postLogin(self)
 
-	// 阻塞主goroutine, 知道发生异常或者用户主动退出
+	// 阻塞主goroutine, 直到发生异常或者用户主动退出
 	bot.Block()
 }
 
@@ -144,7 +146,7 @@ func postLogin(self *openwechat.Self) {
 		t := time.Now()
 		diff := t.Sub(lastReceived)
 		if diff > 2*time.Minute {
-			abortOn("Lost WX ClientCheck handshake", nil)
+			abortOn("Lost WX ClientCheck handshake", ErrClientCheckLost)
 			// try fresh HotLogin via external loop
 		}
 		logIf(1, "wx-clientcheck-passed", "gap", diff)
