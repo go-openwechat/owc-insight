@@ -143,8 +143,8 @@ func main() {
 	// 创建热存储容器对象
 	reloadStorage := openwechat.NewJsonFileHotReloadStorage("storage.json")
 
-	// 执行热登陆
-	err = bot.HotLogin(reloadStorage)
+	// 执行热登陆, 不定长参数设置为true, 可在登录凭证失效后进行扫码登录
+	err = bot.HotLogin(reloadStorage, true)
 	_abortOn("Can't start bot", err, 9)
 
 	// 获取登陆的用户
@@ -192,8 +192,8 @@ func ConsoleQrCode(uuid string) {
 }
 
 func postLogin(self *openwechat.Self) {
-	// 获取所有的群组
-	groups, err := self.Groups()
+	// 获取所有的群组(最新的)
+	groups, err := self.Groups(true)
 	abortOn("Can't get groups", err)
 	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
 
