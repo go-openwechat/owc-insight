@@ -2,14 +2,13 @@ package main
 
 import (
 	"fmt"
-	"time"
 
 	"github.com/suntong/openwechat"
 )
 
 // 处理文本消息
 func textMessageHandle(msg *openwechat.Message) {
-	lastReceived = time.Now()
+	lastReceivedUpdate()
 	sender, err := msg.Sender()
 	abortOn("Can't get sender", err)
 	sendUser := sender.NickName

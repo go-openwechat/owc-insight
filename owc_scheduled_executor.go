@@ -7,18 +7,33 @@ import (
 	"github.com/suntong/openwechat"
 )
 
+// WX ClientCheck from 微信团队 will come within seconds after login
+// wait for ~2 minutes to confirm their arrival
+func wxClientCheck() {
+	time.Sleep(100 * time.Second)
+	t := time.Now()
+	lr := lastReceivedRead()
+	diff := t.Sub(lr)
+	if diff > 2*time.Minute {
+		abortOn("Lost WX ClientCheck handshake", ErrClientCheckLost)
+		// try fresh HotLogin via external loop
+	}
+	logIf(1, "wx-clientcheck-passed", "gap", diff)
+}
+
 // Scheduled Executor
 func periodicHotReload(bot *openwechat.Bot,
 	self *openwechat.Self, reloadStorage openwechat.HotReloadStorage) {
 
 	for true {
+		lr := lastReceivedRead()
 		// delay e.KaWait + e.KaVariety
 		d := e.KaWait + rand.Intn(e.KaVariety)
 		time.Sleep(time.Duration(d) * time.Minute)
 
 		logIf(1, "scheduled-relogin")
 		t := time.Now()
-		diff := t.Sub(lastReceived)
+		diff := t.Sub(lr)
 		if diff < 5*time.Minute {
 			// too hot, wait for quieter time
 			logIf(1, "scheduled-relogin-skipped", "gap", diff)
@@ -38,29 +53,59 @@ func periodicDogFeed(bot *openwechat.Bot,
 	// 获取当前用户所有的公众号
 	mps := getMps(self, false, 1)
 	chatie := mps.SearchByNickName(1, "Chatie")[0]
-	logIf(1, "keep-alive", "chatie", chatie.User)
+	logIf(1, "keep-alive-with", "chatie", chatie.User)
 
-	// delay (e.KaWait + e.KaVariety) / e.KaBoost
+	lr := lastReceivedRead()
+	t := time.Now()
+	diff := t.Sub(lr)
 	for true {
-		d := e.KaWait/e.KaBoost + rand.Intn(e.KaVariety/e.KaBoost)
-		time.Sleep(time.Duration(d) * time.Minute)
+		lr = lastReceivedRead()
+		t = time.Now()
+		diff = t.Sub(lr)
+		// delay ((e.KaWait + e.KaVariety) / e.KaBoost) - diff
+		d := time.Minute *
+			time.Duration(e.KaWait/e.KaBoost+rand.Intn(e.KaVariety/e.KaBoost))
+		logIf(2, "keep-alive-start", "gap", diff)
+		time.Sleep(d - diff)
 
-		logIf(2, "keep-alive")
-		switch rand.Intn(7) {
+		lr = lastReceivedRead()
+		t = time.Now()
+		diff = t.Sub(lr)
+		if diff < d {
+			// too hot, wait for quieter time
+			logIf(1, "keep-alive-skipped", "gap", diff)
+			continue
+		}
+
+		r := rand.Intn(7)
+		switch r {
 		case 0, 1:
 			getFriends(self, true, 1)
-			logIf(1, "keep-alive-done", "with", "getFriends")
+			logIf(1, "keep-alive-done", "with", "getFriends", "rv", r)
 		case 2, 3:
 			getMps(self, true, 1)
-			logIf(1, "keep-alive-done", "with", "getMps")
+			logIf(1, "keep-alive-done", "with", "getMps", "rv", r)
 		case 4, 5:
 			chatie.SendText("ding")
-			logIf(1, "keep-alive-done", "with", "chatie.SendText")
+			logIf(1, "keep-alive-done", "with", "chatie.SendText", "rv", r)
 		case 6:
 			fallthrough
 		default:
 			getGroups(self, true, 2)
-			logIf(1, "keep-alive-done", "with", "getGroups")
+			logIf(1, "keep-alive-done", "with", "getGroups", "rv", r)
 		}
 	}
+}
+
+func lastReceivedUpdate() {
+	lrSync.Lock()
+	lastReceived = time.Now()
+	lrSync.Unlock()
+}
+
+func lastReceivedRead() time.Time {
+	lrSync.Lock()
+	r := lastReceived
+	lrSync.Unlock()
+	return r
 }

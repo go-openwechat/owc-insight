@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"math/rand"
 	"strconv"
+	"sync"
 	"time"
 
 	"github.com/caarlos0/env"
@@ -27,8 +28,8 @@ const desc = "OpenWeChat Insight"
 type envConfig struct {
 	LogLevel  string `env:"OWCI_LOG"`
 	KaWait    int    `env:"OWCI_KA_WAIT" envDefault:"160"`   // keep-alive wait (in min)
-	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"21"` // ka variant (in min)
-	KaBoost   int    `env:"OWCI_KA_BOOST" envDefault:"6"`    // ka boost, factor to devide the above two by
+	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"30"` // ka variant (in min)
+	KaBoost   int    `env:"OWCI_KA_BOOST" envDefault:"6"`    // ka boost, shorter-factor to devide the above two by
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -36,13 +37,15 @@ type envConfig struct {
 
 var (
 	progname = "owc-insight"
-	version  = "0.1.0"
-	date     = "2021-07-20"
+	version  = "0.2.0"
+	date     = "2021-08-20"
 
 	e envConfig
 
 	lastReceived time.Time
 	lastError    time.Time
+	// lastReceived sync
+	lrSync = &sync.Mutex{}
 
 	ErrLoginFailed     = errors.New("login failed")
 	ErrClientCheckLost = errors.New("ClientCheck lost")
@@ -144,18 +147,7 @@ func postLogin(self *openwechat.Self) {
 	friends := getFriends(self, true, 3)
 	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
 
-	// WX ClientCheck from 微信团队 will come within seconds after initially login
-	// wait for ~2 minutes to confirm their arrival
-	go func() {
-		time.Sleep(100 * time.Second)
-		t := time.Now()
-		diff := t.Sub(lastReceived)
-		if diff > 2*time.Minute {
-			abortOn("Lost WX ClientCheck handshake", ErrClientCheckLost)
-			// try fresh HotLogin via external loop
-		}
-		logIf(1, "wx-clientcheck-passed", "gap", diff)
-	}()
+	go wxClientCheck()
 }
 
 // 获取当前用户所有的公众号
