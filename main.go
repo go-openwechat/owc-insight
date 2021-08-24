@@ -28,7 +28,7 @@ type envConfig struct {
 	LogLevel  string `env:"OWCI_LOG"`
 	KaWait    int    `env:"OWCI_KA_WAIT" envDefault:"160"`   // keep-alive wait (in min)
 	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"21"` // ka variant (in min)
-	KaBoost   int    `env:"OWCI_KA_BOOST" envDefault:"3"`    // ka boost, factor to devide the above two by
+	KaBoost   int    `env:"OWCI_KA_BOOST" envDefault:"6"`    // ka boost, factor to devide the above two by
 }
 
 ////////////////////////////////////////////////////////////////////////////
