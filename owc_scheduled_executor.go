@@ -45,18 +45,22 @@ func periodicDogFeed(bot *openwechat.Bot,
 		d := e.KaWait/e.KaBoost + rand.Intn(e.KaVariety/e.KaBoost)
 		time.Sleep(time.Duration(d) * time.Minute)
 
-		logIf(1, "keep-alive")
+		logIf(2, "keep-alive")
 		switch rand.Intn(7) {
 		case 0, 1:
 			getFriends(self, true, 1)
+			logIf(1, "keep-alive-done", "with", "getFriends")
 		case 2, 3:
 			getMps(self, true, 1)
+			logIf(1, "keep-alive-done", "with", "getMps")
 		case 4, 5:
 			chatie.SendText("ding")
+			logIf(1, "keep-alive-done", "with", "chatie.SendText")
 		case 6:
 			fallthrough
 		default:
 			getGroups(self, true, 2)
+			logIf(1, "keep-alive-done", "with", "getGroups")
 		}
 	}
 }

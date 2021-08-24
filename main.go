@@ -133,11 +133,16 @@ func ConsoleQrCode(uuid string) {
 
 func postLogin(self *openwechat.Self) {
 	mps := getMps(self, true, 1)
+	logIf(1, "mps", "list", fmt.Sprintf("%v", mps))
 	for k, mp := range mps {
 		logIf(3, "公众号", "id", k, "rec", fmt.Sprintf("%#v\n", mp.User))
 	}
-	getGroups(self, true, 2)
-	getFriends(self, true, 3)
+
+	groups := getGroups(self, true, 2)
+	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
+
+	friends := getFriends(self, true, 3)
+	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
 
 	// WX ClientCheck from 微信团队 will come within seconds after initially login
 	// wait for ~2 minutes to confirm their arrival
@@ -157,7 +162,6 @@ func postLogin(self *openwechat.Self) {
 func getMps(self *openwechat.Self, update bool, logLevel int) openwechat.Mps {
 	mps, err := self.Mps(update)
 	abortOn("Can't get mps", err)
-	logIf(logLevel, "mps", "list", fmt.Sprintf("%v", mps))
 	return mps
 }
 
@@ -165,7 +169,6 @@ func getMps(self *openwechat.Self, update bool, logLevel int) openwechat.Mps {
 func getGroups(self *openwechat.Self, update bool, logLevel int) openwechat.Groups {
 	groups, err := self.Groups(update)
 	abortOn("Can't get groups", err)
-	logIf(logLevel, "groups", "list", fmt.Sprintf("%v", groups))
 	return groups
 }
 
@@ -173,6 +176,5 @@ func getGroups(self *openwechat.Self, update bool, logLevel int) openwechat.Grou
 func getFriends(self *openwechat.Self, update bool, logLevel int) openwechat.Friends {
 	friends, err := self.Friends(update)
 	abortOn("Can't get friends", err)
-	logIf(logLevel, "friends", "list", fmt.Sprintf("%v", friends))
 	return friends
 }
