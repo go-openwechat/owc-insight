@@ -115,6 +115,7 @@ func main() {
 	lastReceived = time.Now()
 	lastError = time.Now()
 	go periodicHotReload(bot, self, reloadStorage)
+	go periodicDogFeed(bot, self)
 
 	postLogin(self)
 
@@ -131,21 +132,12 @@ func ConsoleQrCode(uuid string) {
 }
 
 func postLogin(self *openwechat.Self) {
-	// 获取当前用户所有的公众号
-	mps, err := self.Mps(true)
-	abortOn("Can't get mps", err)
-	logIf(1, "mps", "list", fmt.Sprintf("%v", mps))
-	fmt.Printf("%#v\n", mps.Last().User)
-
-	// 获取所有的群组(最新的)
-	groups, err := self.Groups(true)
-	abortOn("Can't get groups", err)
-	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
-
-	// 获取所有的好友(最新的好友)
-	friends, err := self.Friends(true)
-	abortOn("Can't get friends", err)
-	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
+	mps := getMps(self, true, 1)
+	for k, mp := range mps {
+		logIf(3, "公众号", "id", k, "rec", fmt.Sprintf("%#v\n", mp.User))
+	}
+	getGroups(self, true, 2)
+	getFriends(self, true, 3)
 
 	// WX ClientCheck from 微信团队 will come within seconds after initially login
 	// wait for ~2 minutes to confirm their arrival
@@ -161,11 +153,26 @@ func postLogin(self *openwechat.Self) {
 	}()
 }
 
-func getMps(self *openwechat.Self, update bool, logLevel int) {
+// 获取当前用户所有的公众号
+func getMps(self *openwechat.Self, update bool, logLevel int) openwechat.Mps {
+	mps, err := self.Mps(update)
+	abortOn("Can't get mps", err)
+	logIf(logLevel, "mps", "list", fmt.Sprintf("%v", mps))
+	return mps
 }
 
-func getGroups(self *openwechat.Self, update bool, logLevel int) {
+// 获取所有的群组(最新的)
+func getGroups(self *openwechat.Self, update bool, logLevel int) openwechat.Groups {
+	groups, err := self.Groups(update)
+	abortOn("Can't get groups", err)
+	logIf(logLevel, "groups", "list", fmt.Sprintf("%v", groups))
+	return groups
 }
 
-func getFriends(self *openwechat.Self, update bool, logLevel int) {
+// 获取所有的好友(最新的好友)
+func getFriends(self *openwechat.Self, update bool, logLevel int) openwechat.Friends {
+	friends, err := self.Friends(update)
+	abortOn("Can't get friends", err)
+	logIf(logLevel, "friends", "list", fmt.Sprintf("%v", friends))
+	return friends
 }
