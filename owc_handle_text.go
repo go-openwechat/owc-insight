@@ -31,8 +31,8 @@ func textMessageHandle(msg *openwechat.Message) {
 	}
 
 	if msg.IsText() {
-		if msg.Content == "ping" {
-			msg.ReplyText("pong")
+		if msg.Content == "foo" {
+			msg.ReplyText("bar")
 			fmt.Println("回文本消息", msg.Content)
 		} else {
 			fmt.Println("收到文本消息", msg.Content)

@@ -26,8 +26,9 @@ const desc = "OpenWeChat Insight"
 
 type envConfig struct {
 	LogLevel  string `env:"OWCI_LOG"`
-	KaWait    int    `env:"OWCI_KA_WAIT" envDefault:"450"`   // keep-alive wait (in min)
-	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"60"` // ka variant (in min)
+	KaWait    int    `env:"OWCI_KA_WAIT" envDefault:"160"`   // keep-alive wait (in min)
+	KaVariety int    `env:"OWCI_KA_VARIETY" envDefault:"21"` // ka variant (in min)
+	KaBoost   int    `env:"OWCI_KA_BOOST" envDefault:"3"`    // ka boost, factor to devide the above two by
 }
 
 ////////////////////////////////////////////////////////////////////////////
@@ -87,6 +88,7 @@ func main() {
 		"log-level", e.LogLevel,
 		"keep-alive-wait-min", e.KaWait,
 		"keep-alive-variant-min", e.KaVariety,
+		"keep-alive-boost-factor", e.KaBoost,
 	)
 
 	bot := openwechat.DefaultBot(openwechat.Desktop)
@@ -129,6 +131,12 @@ func ConsoleQrCode(uuid string) {
 }
 
 func postLogin(self *openwechat.Self) {
+	// 获取当前用户所有的公众号
+	mps, err := self.Mps(true)
+	abortOn("Can't get mps", err)
+	logIf(1, "mps", "list", fmt.Sprintf("%v", mps))
+	fmt.Printf("%#v\n", mps.Last().User)
+
 	// 获取所有的群组(最新的)
 	groups, err := self.Groups(true)
 	abortOn("Can't get groups", err)
@@ -151,4 +159,13 @@ func postLogin(self *openwechat.Self) {
 		}
 		logIf(1, "wx-clientcheck-passed", "gap", diff)
 	}()
+}
+
+func getMps(self *openwechat.Self, update bool, logLevel int) {
+}
+
+func getGroups(self *openwechat.Self, update bool, logLevel int) {
+}
+
+func getFriends(self *openwechat.Self, update bool, logLevel int) {
 }
