@@ -42,6 +42,7 @@ var (
 
 	e envConfig
 
+	timeStarted  time.Time
 	lastReceived time.Time
 	lastError    time.Time
 	// lastReceived sync
@@ -117,8 +118,9 @@ func main() {
 
 	// == Start Scheduled Executor
 	rand.Seed(time.Now().Unix())
-	lastReceived = time.Now()
-	lastError = time.Now()
+	timeStarted = time.Now()
+	lastReceived = timeStarted
+	lastError = timeStarted
 	go periodicHotReload(bot, self, reloadStorage)
 	go periodicDogFeed(bot, self)
 

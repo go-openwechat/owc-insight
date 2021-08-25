@@ -41,7 +41,7 @@ func periodicHotReload(bot *openwechat.Bot,
 
 		err := bot.HotLogin(reloadStorage, false)
 		_abortOn("Can't restart bot", err, 9)
-		logIf(1, "scheduled-relogin-ok", "user", self)
+		logIf(1, "scheduled-relogin-ok", "alive-for", t.Sub(timeStarted))
 		postLogin(self)
 	}
 }
