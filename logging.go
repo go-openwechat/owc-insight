@@ -36,6 +36,16 @@ func init() {
 //==========================================================================
 // support functions
 
+// log level
+// 0: log unconditionally
+// 1: info, necessary output
+// 2: verbose, optional output
+// 3: debug, output for debug purpose
+// 4: silly, unnecessary output
+// 5: hidden, rarly unveil such output
+// 6+: deep debug, hide from all above output cases
+//     normally no longer for output control, but for parking
+//     bump the visibility when things go wrong instead
 func logIf(level int, message string, args ...interface{}) {
 	if debug < level {
 		return

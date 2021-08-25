@@ -65,8 +65,13 @@ func periodicDogFeed(bot *openwechat.Bot,
 		// delay ((e.KaWait + e.KaVariety) / e.KaBoost) - diff
 		d := time.Minute *
 			time.Duration(e.KaWait/e.KaBoost+rand.Intn(e.KaVariety/e.KaBoost))
-		logIf(2, "keep-alive-start", "gap", diff)
-		time.Sleep(d - diff)
+		sleep := d - diff
+		if sleep < 0 {
+			// it last received was too long ago, > d, then disregard it
+			sleep = d
+		}
+		logIf(2, "keep-alive-start", "gap", sleep)
+		time.Sleep(sleep)
 
 		lr = lastReceivedRead()
 		t = time.Now()
@@ -77,18 +82,18 @@ func periodicDogFeed(bot *openwechat.Bot,
 			continue
 		}
 
-		r := rand.Intn(7)
+		r := rand.Intn(6)
 		switch r {
-		case 0, 1:
+		case 0:
 			getFriends(self, true, 1)
 			logIf(1, "keep-alive-done", "with", "getFriends", "rv", r)
-		case 2, 3:
+		case 1, 2:
 			getMps(self, true, 1)
 			logIf(1, "keep-alive-done", "with", "getMps", "rv", r)
-		case 4, 5:
+		case 3, 4:
 			chatie.SendText("ding")
 			logIf(1, "keep-alive-done", "with", "chatie.SendText", "rv", r)
-		case 6:
+		case 5:
 			fallthrough
 		default:
 			getGroups(self, true, 2)

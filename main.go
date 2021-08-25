@@ -138,7 +138,7 @@ func postLogin(self *openwechat.Self) {
 	mps := getMps(self, true, 1)
 	logIf(1, "mps", "list", fmt.Sprintf("%v", mps))
 	for k, mp := range mps {
-		logIf(3, "公众号", "id", k, "rec", fmt.Sprintf("%#v\n", mp.User))
+		logIf(5, "公众号", "id", k, "rec", fmt.Sprintf("%#v\n", mp.User))
 	}
 
 	groups := getGroups(self, true, 2)
