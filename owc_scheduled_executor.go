@@ -7,9 +7,8 @@ import (
 	"github.com/suntong/openwechat"
 )
 
-// WX ClientCheck from 微信团队 will come within seconds after login
-// wait for ~2 minutes to confirm their arrival
-func wxClientCheck() {
+// wxHandshakeCheck will make sure to have recieved message within 2 min
+func wxHandshakeCheck() {
 	time.Sleep(100 * time.Second)
 	t := time.Now()
 	lr := lastReceivedRead()
@@ -50,10 +49,6 @@ func periodicHotReload(bot *openwechat.Bot,
 // periodically feed the watch dog
 func periodicDogFeed(bot *openwechat.Bot,
 	self *openwechat.Self) {
-	// 获取当前用户所有的公众号
-	mps := getMps(self, false, 1)
-	chatie := mps.SearchByNickName(1, "Chatie")[0]
-	logIf(1, "keep-alive-with", "chatie", chatie.User)
 
 	lr := lastReceivedRead()
 	t := time.Now()

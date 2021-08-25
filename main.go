@@ -47,6 +47,8 @@ var (
 	// lastReceived sync
 	lrSync = &sync.Mutex{}
 
+	chatie *openwechat.Mp
+
 	ErrLoginFailed     = errors.New("login failed")
 	ErrClientCheckLost = errors.New("ClientCheck lost")
 )
@@ -140,6 +142,8 @@ func postLogin(self *openwechat.Self) {
 	for k, mp := range mps {
 		logIf(5, "公众号", "id", k, "rec", fmt.Sprintf("%#v\n", mp.User))
 	}
+	chatie = mps.SearchByNickName(1, "Chatie")[0]
+	logIf(1, "keep-alive-with", "chatie", chatie.User)
 
 	groups := getGroups(self, true, 2)
 	logIf(2, "groups", "list", fmt.Sprintf("%v", groups))
@@ -147,7 +151,9 @@ func postLogin(self *openwechat.Self) {
 	friends := getFriends(self, true, 3)
 	logIf(3, "friends", "list", fmt.Sprintf("%v", friends))
 
-	go wxClientCheck()
+	// WX ClientCheck from 微信团队 will come within seconds after login
+	// wait for ~2 minutes to confirm their arrival
+	go wxHandshakeCheck()
 }
 
 // 获取当前用户所有的公众号

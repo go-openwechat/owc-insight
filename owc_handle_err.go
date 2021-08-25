@@ -20,4 +20,6 @@ func messageErrorHandler(err error) {
 	}
 	logIf(0, "catch-and-skip", "count", count, "err", err)
 	lastError = time.Now()
+	chatie.SendText("ding")
+	go wxHandshakeCheck()
 }
