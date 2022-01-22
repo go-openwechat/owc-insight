@@ -17,7 +17,7 @@ import (
 	"github.com/caarlos0/env"
 	//"github.com/eatMoreApple/openwechat"
 	"github.com/skip2/go-qrcode"
-	"github.com/suntong/openwechat"
+	"github.com/eatmoreapple/openwechat"
 )
 
 ////////////////////////////////////////////////////////////////////////////

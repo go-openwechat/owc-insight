@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/suntong/openwechat"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // 处理文本消息

@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/suntong/openwechat"
+	"github.com/eatmoreapple/openwechat"
 )
 
 // wxHandshakeCheck will make sure to have recieved message within 2 min
