@@ -97,12 +97,10 @@ func main() {
 		"keep-alive-boost-factor", e.KaBoost,
 	)
 
-	bot := openwechat.DefaultBot(openwechat.Desktop)
+	bot := openwechat.DefaultBot()
 	//bot.Caller.Client.AddHttpHook(ResponseHooker{})
 	// 注册登陆二维码回调
 	bot.UUIDCallback = ConsoleQrCode
-	// 注册错误处理函数
-	bot.GetMessageErrorHandler = messageErrorHandler
 	// 注册消息处理函数
 	bot.MessageHandler = textMessageHandle
 
